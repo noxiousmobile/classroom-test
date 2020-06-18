@@ -11,7 +11,7 @@ export class ClassroomSelectorComponent implements OnInit {
   @Input() column: number = 0;
   classRow = new Array();
   classColumn = new Array();
-  public number;
+  public number: any;
   public disableInput = false;
 
   constructor() { }
@@ -33,8 +33,7 @@ export class ClassroomSelectorComponent implements OnInit {
 
   onChange(event: any): void {
     let verifyRows = event.target.value;
-
-    console.log(verifyRows);
+    // console.log(verifyRows);
     let stringToVerify = [];
     stringToVerify = verifyRows.split(",");
 
@@ -56,6 +55,25 @@ export class ClassroomSelectorComponent implements OnInit {
       this.number = this.number.toString().substring(0, this.number.length - 1);
     }
 
+  }
+
+  onBlur(event: any): void {
+    console.log('onBlur called');
+    let sortNumbers = event.target.value;
+    let sortArray = [];
+
+    sortArray = sortNumbers.split(",").sort(function (a, b) {
+      if (isNaN(Number(a.charAt(0))))
+        return -1;
+      if (isNaN(Number(b.charAt(0))))
+        return 1;
+      return a.charAt(0) - b.charAt(0);
+    });
+
+    console.log('sortArray', sortArray);
+    const joinStrings = sortArray.join(',');
+    this.number = joinStrings;
+    console.log('joinStrings', joinStrings);
   }
 
 }
