@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClassroomSelectorComponent } from './components/classroom-selector/classroom-selector.component';
 import { FormsModule } from '@angular/forms';
+import { ClassRowComponent } from './components/class-row/class-row.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ClassroomSelectorComponent
+    ClassroomSelectorComponent,
+    ClassRowComponent
   ],
   imports: [
     BrowserModule,

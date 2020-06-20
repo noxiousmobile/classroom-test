@@ -1,0 +1,19 @@
+.classroom {
+    width: 100%;
+}
+.table-data{
+    height: 50px;
+    width: 100vw;
+    border: 1px solid #bdc3c7;
+    background-color: #f5e3d3;
+    &.table-selected {
+        background-color: #ef975d;
+        box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
+    }
+}
+tr {
+    display: block;
+}
+.row-selected {
+    background-color: #bdc3c7;
+}

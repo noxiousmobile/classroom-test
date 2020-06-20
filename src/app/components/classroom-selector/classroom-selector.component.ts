@@ -13,6 +13,8 @@ export class ClassroomSelectorComponent implements OnInit {
   classColumn = new Array();
   public number: any;
   public disableInput = false;
+  public classRowToVerify: any = [];
+  public rowSelectedToVerify: any = [];
 
   constructor() { }
 
@@ -32,15 +34,17 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   onChange(event: any): void {
+    this.classRowToVerify = [];
     let verifyRows = event.target.value;
-    // console.log(verifyRows);
+    console.log(verifyRows);
     let stringToVerify = [];
     stringToVerify = verifyRows.split(",");
 
     let lastItem = parseInt(stringToVerify.slice(-1)[0], 10);
-
-    // console.log('stringToVerify is', stringToVerify);
-    // console.log('lastItem is', lastItem);
+    this.classRowToVerify = stringToVerify;
+    console.log('stringToVerify is', stringToVerify);
+    console.log('lastItem is', lastItem);
+    console.log('number is', this.number);
     if (lastItem > this.row) {
       console.log('Number is bigger than row');
       this.number = this.number.toString().substring(0, this.number.length - 1);
@@ -53,6 +57,10 @@ export class ClassroomSelectorComponent implements OnInit {
     if (searchDuplicate(stringToVerify).length > 0) {
       console.log('Duplicate found');
       this.number = this.number.toString().substring(0, this.number.length - 1);
+    }
+    
+    if (this.classRowToVerify[0] == "") {
+      this.classRowToVerify = [];
     }
 
   }
@@ -74,6 +82,54 @@ export class ClassroomSelectorComponent implements OnInit {
     const joinStrings = sortArray.join(',');
     this.number = joinStrings;
     console.log('joinStrings', joinStrings);
+
+    if (this.classRowToVerify[0] == "") {
+      this.classRowToVerify = [];
+    }
+  }
+
+  rowSelected(rowSelected: any) {
+    let searchDuplicate = numbers => numbers.filter((item, index) => numbers.indexOf(item) != index);
+    console.log('Row selected:', rowSelected);
+    console.log('this.classRowToVerify', this.classRowToVerify);
+    console.log('this.classRowToVerify', this.classRowToVerify.length);
+
+     // number is probably entered in the input field
+     if (this.classRowToVerify.length > 0 && this.number) {
+      const duplicationFound = this.classRowToVerify.indexOf(rowSelected.toString());
+        if (duplicationFound > -1) {
+          console.log('Removing element');
+          this.classRowToVerify.splice(duplicationFound, 1);
+          console.log(this.classRowToVerify);
+          const joinStrings = this.classRowToVerify.join(',');
+          this.number = joinStrings;
+        } else {
+          this.classRowToVerify.push(rowSelected.toString());
+          const joinStrings = this.classRowToVerify.join(',');
+          this.number = joinStrings;
+        }
+      return;
+    } else {
+      this.classRowToVerify.push(rowSelected.toString());
+      searchDuplicate(this.classRowToVerify);
+    }
+    if (searchDuplicate(this.classRowToVerify).length > 0) {
+      console.log('Duplicate found!');
+      this.classRowToVerify.pop();
+      console.log('this.classRowToVerify', this.classRowToVerify);
+      const duplicationFound = this.classRowToVerify.indexOf(rowSelected.toString());
+      if (duplicationFound > -1) {
+        console.log('Duplicate duplicationFound found. Removing!!!');
+        this.classRowToVerify.splice(duplicationFound, 1);
+        const joinStringsRow = this.classRowToVerify.join(',');
+        this.number = joinStringsRow;
+      }
+    }
+    const joinStringsRow = this.classRowToVerify.join(',');
+    this.number = joinStringsRow;
+    console.log('ROW SELECTED classRowToVerify', this.classRowToVerify);
+    console.log('ROW SELECTED classRowToVerify', this.classRowToVerify);
+    console.log('this.number', this.number);
   }
 
 }
