@@ -16,8 +16,9 @@ export class ClassRowComponent implements OnInit, OnChanges {
   @Input() classColumn: any;
   @Input() selectedRow: any;
   @Output() onRowSelected = new EventEmitter<any>();
+  
   rowSelected: boolean = false;
-
+  hasInitialized: boolean = false;
   constructor() { 
 
   }
@@ -25,19 +26,15 @@ export class ClassRowComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     console.log('ClassRowComponent selectedRow is:', this.selectedRow);
     console.log('rowIndex is:', this.rowIndex);
-
     // Not for ranges
     if (!!(this.selectedRow.indexOf(this.rowIndex.toString())+1)) {
       this.rowSelected = true;
     } else {
       this.rowSelected = false;
     }
-
   }
 
-  ngOnInit() {
-    this.rowIndex = this.rowIndex + 1;
-  }
+  ngOnInit() { }
 
   selectClassRow() {
     console.log('Selected:', this.rowIndex);

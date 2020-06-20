@@ -9,17 +9,24 @@ export class ClassroomSelectorComponent implements OnInit {
 
   @Input() row: number = 0;
   @Input() column: number = 0;
+  @Input() value: string = '';
+
   classRow = new Array();
   classColumn = new Array();
   public number: any;
   public disableInput = false;
   public classRowToVerify: any = [];
   public rowSelectedToVerify: any = [];
-
   constructor() { }
 
   ngOnInit() {
+    console.log('value is', this.value);
+    if (this.value !== '') {
+      console.log('Classroom has row selected by default.');
+    }
+    this.number = this.value;
     this.doClassroom();
+    this.checkClassroom();
   }
 
   doClassroom() {
@@ -31,6 +38,29 @@ export class ClassroomSelectorComponent implements OnInit {
     for (let i = 1; i < this.column + 1; i++) {
       this.classColumn.push(i);
     }
+  }
+
+  checkClassroom() {
+    console.log('checkClassroom...');
+    console.log('this.value', this.value);
+    console.log('this.classRow', this.classRow);
+
+    // Converting the numbers into strings in the array
+    // I need this function if someone enters values which are not mathing the number for rows
+    // so they need to be removed/ignored
+    let checkForRows = this.classRow.map(String);
+    
+    this.classRowToVerify = [];
+    let stringToVerify = [];
+    stringToVerify = this.value.split(",");
+    this.classRowToVerify = stringToVerify;
+    console.log('this.classRowToVerify', this.classRowToVerify);
+
+    let checkIfElementsAvailable = checkForRows.filter(i => this.classRowToVerify.indexOf(i) !== -1);
+    this.classRowToVerify = checkIfElementsAvailable;
+
+    const joinStrings = this.classRowToVerify.join(',');
+    this.number = joinStrings;
   }
 
   onChange(event: any): void {

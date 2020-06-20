@@ -13,7 +13,7 @@
 
 <table class="classroom">
     <ng-container *ngFor="let row of classRow; let rowIndex=index">
-        <class-row [classColumn]="classColumn" [classRow]="classRow" [rowIndex]="rowIndex"
+        <class-row [classColumn]="classColumn" [classRow]="classRow" [rowIndex]="rowIndex + 1"
             [selectedRow]="classRowToVerify" (onRowSelected)="rowSelected($event)">
         </class-row>
     </ng-container>
