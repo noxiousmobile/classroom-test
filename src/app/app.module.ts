@@ -5,24 +5,27 @@ import { routes } from './app.routes';
 
 // import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-// import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { StudentsListComponent } from './students-list/students-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ManageStudentsComponent } from './students-list/components/manage-students/manage-students.component';
 import { MatInputModule, MatButtonModule, MatTableModule, MatDialogModule, MatFormFieldModule } from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StudentsListComponent
+    StudentsListComponent,
+    ManageStudentsComponent
   ],
+  entryComponents: [ManageStudentsComponent],
   imports: [
     RouterModule.forRoot(routes, { useHash: false }),
     BrowserModule,
     BrowserAnimationsModule,
     // AppRoutingModule,
-    // FormsModule,
+    FormsModule,
     SharedModule,
     MatTableModule,
     MatDialogModule,

@@ -158,7 +158,6 @@ export class ClassroomSelectorComponent implements OnInit {
     const joinStringsRow = this.classRowToVerify.join(',');
     this.number = joinStringsRow;
     console.log('ROW SELECTED classRowToVerify', this.classRowToVerify);
-    console.log('ROW SELECTED classRowToVerify', this.classRowToVerify);
     console.log('this.number', this.number);
   }
 

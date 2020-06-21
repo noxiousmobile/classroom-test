@@ -5,3 +5,22 @@ table.mat-table {
     display: table;
     width: 100%;
 }
+.action-link {
+    font-weight: normal;
+    cursor: pointer;
+    a {
+        padding: 8px 20px 8px 20px;
+        background-color: #f4f4f4;
+        border-radius: 6px;
+        height: 30px;
+        &.delete {
+            background-color: #f4f4f4;
+            color: #f44336;
+        }
+    }
+    .delete {
+        font-weight: 600;
+        margin-left: 10px;
+        
+    }
+}
