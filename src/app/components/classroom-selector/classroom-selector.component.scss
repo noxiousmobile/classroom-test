@@ -6,9 +6,11 @@
 }
 .main-header {
     padding: 10px;
-    text-align: center;
-    background-color: #ecf0f1;
+    text-align: left;
+    background-color: #fff;
     color: #2c3e50;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    // box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
     label {
         &:not(:first-child) {
             padding-left: 10px;
@@ -22,13 +24,91 @@
             width: 50px;
         }
     }
-    .create-button {
-        background-color: #16a085;
-        color: #fff;
-        height: 30px;
-        box-shadow: none;
-        border: none;
-        font-size: 16px;
-        margin: 0 10px;
+}
+.create-button {
+    background-color: #3f51b5;
+    color: #fff;
+    text-align: center;
+    min-width: 64px;
+    line-height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    box-shadow: none;
+    border-color: transparent;
+    border-style: none;
+    margin: 15px 15px;
+    float: right;
+    bottom: 18px;
+    position: relative;
+    &:hover {
+        border-style: none !important;
+        border: none !important;
+        border-image: none !important;
+        border-width: 0 !important;
     }
+    &:active {
+        border-style: none !important;
+        border: none !important;
+        border-image: none !important;
+        border-width: 0 !important;
+    }
+}
+.cancel-button {
+    background-color: #fefefe;
+    color: #333;
+    text-align: center;
+    min-width: 64px;
+    line-height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    box-shadow: none;
+    border-color: transparent;
+    border-style: none;
+    margin: 15px 15px;
+    float: right;
+    bottom: 18px;
+    position: relative;
+    &:hover {
+        border-style: none !important;
+        border: none !important;
+        border-image: none !important;
+        border-width: 0 !important;
+    }
+    &:active {
+        border-style: none !important;
+        border: none !important;
+        border-image: none !important;
+        border-width: 0 !important;
+    }
+}
+.button-header {
+    width: 100%;
+    text-align: right;
+}
+.header-info {
+    float: left;
+    font-size: 18px;
+    // margin: 15px 15px 15px 0px;
+    .header-image {
+        img {
+            width: 30px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .manage-students {
+        padding-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        color: #2c3e50;
+        font-family: Roboto,"Helvetica Neue",sans-serif;
+    }
+}
+.header-element-info {
+    display: inline-block;
+    margin-left: 15px;
+    color: gray;
+    font-size: 14px;
 }

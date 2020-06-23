@@ -1,43 +1,104 @@
-import { Component, OnInit, Input, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy, ViewChildren, QueryList, ElementRef, ViewChild, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'classroom-selector',
   templateUrl: './classroom-selector.component.html',
   styleUrls: ['./classroom-selector.component.scss']
 })
-export class ClassroomSelectorComponent implements OnInit {
+export class ClassroomSelectorComponent implements OnInit, OnChanges {
 
   @Input() row: number = 0;
   @Input() column: number = 0;
   @Input() value: string = '';
-
+  @Input() assignedRow: number;
+  @ViewChildren("classRowRef") classRowRef: QueryList<any>;
+  
   classRow = new Array();
   classColumn = new Array();
   public number: any;
   public disableInput = false;
   public classRowToVerify: any = [];
   public rowSelectedToVerify: any = [];
-  constructor() { }
+  public createNewClassroom: boolean = false;
+  public newRow: number = 0;
+  public newColumn: number = 0;
+
+  constructor(private changeDetectorRef: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
-    console.log('value is', this.value);
+    // console.log('value is', this.value);
     if (this.value !== '') {
       console.log('Classroom has row selected by default.');
     }
     this.number = this.value;
-    this.doClassroom();
+    this.doClassroom(false);
     this.checkClassroom();
   }
 
-  doClassroom() {
-    this.classRow = [];
-    this.classColumn = [];
-    for (let i = 1; i < this.row + 1; i++) {
-      this.classRow.push(i);
+  ngOnChanges(changes: SimpleChanges) {
+  
+  }
+
+  removeClassRowData() {
+    this.classRowRef.forEach((classRow) => {
+      classRow.removeClassRowData();
+    });
+  }
+
+  getRowSeats(number, name) {
+    // I can get all my class-row component instances here by looping through
+    // ViewChildren QueryList
+    this.classRowRef.forEach((classRow) => {
+      if (classRow.rowIndex === number) {
+        console.log('Viewchild of this row is:');
+        console.log(classRow);
+        classRow.getRowSeats(name);
+      }
+    });
+    this.changeDetectorRef.detectChanges();
+  }
+
+  doClassroom(isNew: boolean) {
+    if (!isNew) {
+      this.classRow = [];
+      this.classColumn = [];
+      for (let i = 1; i < this.row + 1; i++) {
+        this.classRow.push(i);
+      }
+      for (let i = 1; i < this.column + 1; i++) {
+        this.classColumn.push(i);
+      }
     }
-    for (let i = 1; i < this.column + 1; i++) {
-      this.classColumn.push(i);
+
+    if (isNew) {
+      this.classRow = [];
+      this.classColumn = [];
+
+      this.row = this.newRow;
+      this.column = this.newColumn;
+      this.number = '';
+      this.classRowToVerify = [];
+      this.createNewClassroom = false;
+
+      this.removeClassRowData();
+
+      for (let i = 1; i < this.row + 1; i++) {
+        this.classRow.push(i);
+      }
+      for (let i = 1; i < this.column + 1; i++) {
+        this.classColumn.push(i);
+      }
+
+      console.log('this.row', this.row);
+      console.log('this.column', this.column);
     }
+  }
+
+  doCreateNewClassroom() {
+    this.createNewClassroom = !this.createNewClassroom;
+    this.newRow = 0;
+    this.newColumn = 0;
   }
 
   checkClassroom() {
@@ -49,7 +110,7 @@ export class ClassroomSelectorComponent implements OnInit {
     // I need this function if someone enters values which are not mathing the number for rows
     // so they need to be removed/ignored
     let checkForRows = this.classRow.map(String);
-    
+
     this.classRowToVerify = [];
     let stringToVerify = [];
     stringToVerify = this.value.split(",");
@@ -88,7 +149,7 @@ export class ClassroomSelectorComponent implements OnInit {
       console.log('Duplicate found');
       this.number = this.number.toString().substring(0, this.number.length - 1);
     }
-    
+
     if (this.classRowToVerify[0] == "") {
       this.classRowToVerify = [];
     }
@@ -124,20 +185,20 @@ export class ClassroomSelectorComponent implements OnInit {
     console.log('this.classRowToVerify', this.classRowToVerify);
     console.log('this.classRowToVerify', this.classRowToVerify.length);
 
-     // number is probably entered in the input field
-     if (this.classRowToVerify.length > 0 && this.number) {
+    // number is probably entered in the input field
+    if (this.classRowToVerify.length > 0 && this.number) {
       const duplicationFound = this.classRowToVerify.indexOf(rowSelected.toString());
-        if (duplicationFound > -1) {
-          console.log('Removing element');
-          this.classRowToVerify.splice(duplicationFound, 1);
-          console.log(this.classRowToVerify);
-          const joinStrings = this.classRowToVerify.join(',');
-          this.number = joinStrings;
-        } else {
-          this.classRowToVerify.push(rowSelected.toString());
-          const joinStrings = this.classRowToVerify.join(',');
-          this.number = joinStrings;
-        }
+      if (duplicationFound > -1) {
+        console.log('Removing element');
+        this.classRowToVerify.splice(duplicationFound, 1);
+        console.log(this.classRowToVerify);
+        const joinStrings = this.classRowToVerify.join(',');
+        this.number = joinStrings;
+      } else {
+        this.classRowToVerify.push(rowSelected.toString());
+        const joinStrings = this.classRowToVerify.join(',');
+        this.number = joinStrings;
+      }
       return;
     } else {
       this.classRowToVerify.push(rowSelected.toString());

@@ -1,6 +1,12 @@
 <div class="container">
 
-    <button mat-button mat-flat-button color="primary" (click)="manageStudent('Add',{})" >Add New Student</button>
+    <div class="header-info">
+        <span class="header-image"><img src="../../assets/student.png" /></span>
+        <span class="manage-students">Manage Students</span>
+    </div>
+
+    <button class="action-button" mat-button mat-flat-button color="primary" (click)="manageStudent('Add',{})">Add New
+        Student</button>
 
     <table #studentsTable mat-table [dataSource]="mockDataSource" class="mat-elevation-z6">
 
@@ -19,11 +25,21 @@
             <td mat-cell *matCellDef="let item"> {{item.surname}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="assigned">
+            <th mat-header-cell *matHeaderCellDef>Assigned </th>
+            <td mat-cell *matCellDef="let item">
+                <span class="yes" *ngIf="item.assigned === true">YES</span>
+                <span *ngIf="item.assigned === false">NO</span>
+            </td>
+        </ng-container>
+
         <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef>Manage </th>
-            <td mat-cell *matCellDef="let element" class="action-link"> 
-                <a (click)="manageStudent('Modify',element)">Edit</a> 
-                <a class="delete" (click)="manageStudent('Delete',element)">Delete</a>  
+            <td mat-cell *matCellDef="let item" class="action-link">
+                <a class="assign" *ngIf="!item.assigned" (click)="manageStudent('Assign',item)">Assign</a>
+                <a class="assigned" *ngIf="item.assigned">Assigned</a>
+                <a (click)="manageStudent('Modify',item)">Edit</a>
+                <a class="delete" (click)="manageStudent('Delete',item)">Delete</a>
             </td>
         </ng-container>
 
@@ -31,6 +47,7 @@
         <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
     </table>
 
-    
-
 </div>
+
+<classroom-selector #classRoomSelector [row]="6" [column]="9" [value]="'1,3,6,7,10'" [assignedRow]="assignedRow">
+</classroom-selector>

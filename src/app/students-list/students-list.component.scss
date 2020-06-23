@@ -1,5 +1,6 @@
 .container {
     width: 100%;
+    padding-bottom: 3%;
 }
 table.mat-table {
     display: table;
@@ -21,6 +22,59 @@ table.mat-table {
     .delete {
         font-weight: 600;
         margin-left: 10px;
-        
     }
+    .assign, .assigned {
+        margin-right: 10px;
+    }
+    .assigned {
+        color: #a9a9a9;
+    }
+}
+.action-button {
+    float: right;
+    margin: 15px 22px;
+}
+.mat-column-id {
+    width: 10%;
+    flex: 0 0 10%;
+}
+.mat-column-name {
+    width: 30%;
+    flex: 0 0 30%;
+}
+.mat-column-surname {
+    width: 20%;
+    flex: 0 0 20%;
+}
+.mat-column-assigned {
+    width: 10%;
+    flex: 0 0 10%;
+}
+.mat-column-edit {
+    width: 40%;
+    flex: 0 0 40%;
+    text-align: right;
+}
+.header-info {
+    float: left;
+    margin: 15px 15px 15px 0px;
+    .header-image {
+        img {
+            width: 30px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .manage-students {
+        font-size: 18px;
+        padding-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        color: #2c3e50;
+        font-family: Roboto,"Helvetica Neue",sans-serif;
+    }
+}
+
+.yes {
+    font-weight: bold;
 }

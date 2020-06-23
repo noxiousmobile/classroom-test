@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
 import { MatTable, MatDialog } from '@angular/material';
 import { ManageStudentsComponent } from './components/manage-students/manage-students.component';
 
@@ -6,13 +6,14 @@ export interface Students {
   id: number;
   name: string;
   surname: string;
+  assigned: boolean;
 }
 
 const STUDENTS_MOCK: Students[] = [
-  { id: 0, name: 'Nikola', surname: 'Dimitrov' },
-  { id: 1, name: 'Kire', surname: 'Kostov' },
-  { id: 2, name: 'Mirce', surname: 'Acev' },
-  { id: 3, name: 'Ivan', surname: 'Burev' }
+  { id: 0, name: 'Nikola', surname: 'Dimitrov', assigned: false },
+  { id: 1, name: 'Kire', surname: 'Kostov', assigned: false },
+  { id: 2, name: 'Mirce', surname: 'Acev', assigned: false },
+  { id: 3, name: 'Ivan', surname: 'Burev', assigned: false }
 ];
 
 @Component({
@@ -23,8 +24,10 @@ const STUDENTS_MOCK: Students[] = [
 export class StudentsListComponent implements OnInit {
 
   @ViewChild('studentsTable', { static: true }) studentsTable: MatTable<any>;
-  tableColumns: string[] = ['id', 'name', 'surname', 'edit'];
+  @ViewChild('classRoomSelector', { static: true }) classRoomSelector;
+  tableColumns: string[] = ['id', 'name', 'surname', 'assigned', 'edit'];
   mockDataSource = STUDENTS_MOCK;
+  assignedRow: number = 0;
 
   constructor(
     public dialog: MatDialog
@@ -35,7 +38,6 @@ export class StudentsListComponent implements OnInit {
 
   manageStudent(action, item) {
     item.action = action;
-    console.log('NOXIOUS IS', item.action);
     const manageDialog = this.dialog.open(ManageStudentsComponent, {
       width: '300px',
       data: item
@@ -48,21 +50,22 @@ export class StudentsListComponent implements OnInit {
         this.modifyStudent(action.data);
       } else if (action.event == 'Delete') {
         this.deleteStudent(action.data);
+      } else if (action.event == 'Assign') {
+        this.assignStudent(action.data);
       }
     });
 
   }
 
   addStudent(item) {
-    console.log('NOXIOUS ADD STUDENT', this.mockDataSource.length);
     let rowID = this.mockDataSource.length;
 
     this.mockDataSource.push({
       id: rowID,
       name: item.name,
-      surname: item.surname
+      surname: item.surname,
+      assigned: false
     });
-
     this.studentsTable.renderRows();
 
   }
@@ -81,6 +84,22 @@ export class StudentsListComponent implements OnInit {
     this.mockDataSource = this.mockDataSource.filter((value, key) => {
       return value.id != item.id;
     });
+  }
+
+  assignStudent(item) {
+    // I am getting the row I wish this student to be assigned for
+    let name = item.name;
+    console.log('Student assigned for row', this.assignedRow);
+    this.mockDataSource = this.mockDataSource.filter((value, key) => {
+      if (value.id == item.id) {
+        value.name = item.name;
+        value.surname = item.surname;
+        value.assigned = true;
+        this.assignedRow = parseInt(item.assign, 10);
+      }
+      return true;
+    });
+    this.classRoomSelector.getRowSeats(this.assignedRow, name);
   }
 
 }

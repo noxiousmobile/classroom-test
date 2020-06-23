@@ -1,19 +1,36 @@
 <div class="main-header">
-    <label for="row">Main input: </label>
-    <input type="text" [(ngModel)]="number" (keyup)="onChange($event)" (blur)="onBlur($event)" />
 
-    <label for="row">Class rows: </label>
-    <input class="number-inputs" type="number" id="row" [(ngModel)]="row" />
+    <div class="header-info">
+        <span class="header-image"><img src="../../assets/classroom.png" /></span>
+        <span class="manage-students">Manage Classroom</span>
+    </div>
 
-    <label for="column">Class columns: </label>
-    <input class="number-inputs" type="number" id="column" [(ngModel)]="column" />
+    <div class="header-element-info">
+        <label for="row">Select rows: </label>
+        <input type="text" [(ngModel)]="number" (keyup)="onChange($event)" (blur)="onBlur($event)" />
+    </div>
+    
+    <div class="header-element-info" *ngIf="!createNewClassroom">
+        <span>You have {{row}} rows and {{column}} columns</span>
+    </div>
 
-    <button type="button" class="create-button" (click)="doClassroom()">Create new classroom</button>
+    <div class="header-element-info" *ngIf="createNewClassroom">
+        <span>Enter new data:</span>
+        <label for="row">Rows: </label>
+        <input class="number-inputs" type="number" id="row" [(ngModel)]="newRow" />
+
+        <label for="column">Columns: </label>
+        <input class="number-inputs" type="number" id="column" [(ngModel)]="newColumn" />
+    </div>
+
+    <button *ngIf="!createNewClassroom" type="button" class="create-button" (click)="doCreateNewClassroom()">Create new classroom</button>
+    <button *ngIf="createNewClassroom"type="button" class="cancel-button" (click)="doCreateNewClassroom()">Cancel</button>
+    <button *ngIf="createNewClassroom"type="button" class="create-button" (click)="doClassroom(true)">Confirm</button>
 </div>
 
 <table class="classroom">
     <ng-container *ngFor="let row of classRow; let rowIndex=index">
-        <class-row [classColumn]="classColumn" [classRow]="classRow" [rowIndex]="rowIndex + 1"
+        <class-row id="{{rowIndex + 1}}" #classRowRef [classColumn]="classColumn" [classRow]="classRow" [rowIndex]="rowIndex + 1"
             [selectedRow]="classRowToVerify" (onRowSelected)="rowSelected($event)">
         </class-row>
     </ng-container>
